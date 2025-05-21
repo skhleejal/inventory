@@ -79,7 +79,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'invoicemgmt',
         'USER':'invoicemgmt',
-        'PASSWORD':'invoicemgmt',
+        'PASSWORD':'Invoicemgmt2',
     }
 }
 
