@@ -1,5 +1,15 @@
 from django.db import models
 
+
+def number_to_words(n):
+    # Simple implementation for demonstration; use 'num2words' for production
+    try:
+        from num2words import num2words
+        return num2words(n, to='currency', lang='en')
+    except ImportError:
+        return str(n)
+
+
 class Customer(models.Model):
     name = models.CharField(max_length=255)
     po_box = models.CharField(max_length=50, blank=True, null=True)
@@ -28,6 +38,13 @@ class Invoice(models.Model):
     amount_in_words = models.CharField(max_length=512, blank=True)
     payment_method = models.CharField(max_length=100, blank=True, null=True, default="CDC")
     created_at = models.DateTimeField(auto_now_add=True)
+
+    
+    def save(self, *args, **kwargs):
+        self.total_amount = self.total_taxable + self.total_vat
+        self.amount_in_words = number_to_words(self.total_amount)
+        super().save(*args, **kwargs)
+
 
     def __str__(self):
         return f"Invoice #{self.invoice_number} for {self.customer.name}"

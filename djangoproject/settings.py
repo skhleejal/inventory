@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'invoicemgmt','testapp',
+    'invoicemgmt',
     'rest_framework',
 ]
 
