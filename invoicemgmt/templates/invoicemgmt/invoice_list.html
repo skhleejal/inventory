@@ -1,0 +1,9 @@
+<h1>Invoice List</h1>
+<ul>
+    {% for invoice in invoices %}
+        <li>Invoice #{{ invoice.id }} - {{ invoice.customer.name }} - ${{ invoice.amount }}</li>
+    {% empty %}
+        <li>No invoices found.</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'home' %}">Back to Home</a>
