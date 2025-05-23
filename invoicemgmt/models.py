@@ -1,14 +1,17 @@
 from django.db import models
 
-
 def number_to_words(n):
-    # Simple implementation for demonstration; use 'num2words' for production
     try:
         from num2words import num2words
-        return num2words(n, to='currency', lang='en')
+        words = num2words(n, to='currency', lang='en', currency='USD')
+        # Replace 'dollars' and 'cents' with 'dirhams' and 'fils'
+        words = words.replace('dollars', 'dirhams').replace('cents', 'fils')
+        return words
     except ImportError:
         return str(n)
-
+    except Exception as e:
+        print("Other error:", e)
+        return str(n)
 
 class Customer(models.Model):
     name = models.CharField(max_length=255)
@@ -45,10 +48,6 @@ class Invoice(models.Model):
         self.amount_in_words = number_to_words(self.total_amount)
         super().save(*args, **kwargs)
 
-
-    def __str__(self):
-        return f"Invoice #{self.invoice_number} for {self.customer.name}"
-
 class InvoiceLineItem(models.Model):
     invoice = models.ForeignKey(Invoice, related_name='line_items', on_delete=models.CASCADE)
     description = models.TextField()
@@ -56,7 +55,7 @@ class InvoiceLineItem(models.Model):
     unit_price = models.DecimalField(max_digits=10, decimal_places=2)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     vat_rate = models.DecimalField(max_digits=4, decimal_places=2, default=5.00)
-    vat_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    vat_amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         self.amount = self.quantity * self.unit_price
