@@ -38,3 +38,7 @@ def create_invoice(request):
         'form': form,
         'formset': formset,
     })
+
+def invoice_detail(request, pk):
+    invoice = Invoice.objects.get(pk=pk)
+    return render(request, 'invoicemgmt/invoice_detail.html', {'invoice': invoice})
