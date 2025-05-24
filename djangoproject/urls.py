@@ -5,4 +5,5 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('invoicemgmt.urls')),  # Include the URLs from your app
+    
 ]
